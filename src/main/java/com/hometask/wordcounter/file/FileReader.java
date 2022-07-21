@@ -11,7 +11,6 @@ import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 
-@Slf4j
 @Component
 @RequiredArgsConstructor
 public class FileReader {
