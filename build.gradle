@@ -1,0 +1,49 @@
+plugins {
+	id 'org.springframework.boot' version '2.7.1'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+}
+
+group = 'com.hometask'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+bootRun {
+	standardInput = System.in
+}
+
+
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter'
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+		exclude group: 'org.mockito', module: 'mockito-junit-jupiter'
+
+	}
+
+	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+	testCompileOnly 'junit:junit:4.13'
+	testRuntimeOnly 'org.junit.vintage:junit-vintage-engine'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+subprojects {
+	junitPlatformTest.dependsOn processTestResources
+}
