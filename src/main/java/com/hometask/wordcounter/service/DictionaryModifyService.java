@@ -15,7 +15,6 @@ public class DictionaryModifyService {
     public List<String> removeNotUsableWords(List<String> listOfWords) {
         return listOfWords.stream()
                 .filter(word -> isUsable(word, listOfWords))
-                .map(String::toLowerCase)
                 .collect(Collectors.toList());
     }
 

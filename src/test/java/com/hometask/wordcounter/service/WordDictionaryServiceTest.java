@@ -44,20 +44,42 @@ public class WordDictionaryServiceTest {
     }
 
     @Test
-    public void runTest_WordsFound() {
+    public void runTest_WordsFoundCaseSensitive() {
         List<String> listOfWords = Collections.singletonList("word");
         when(fileReader.getListOfWordsFromFile("file")).thenReturn(listOfWords);
-        when(inputReceiver.getInputStringFromUser()).thenReturn("someword");
-        when(wordCountService.findWordsInProvidedString("someword", listOfWords))
+        when(inputReceiver.getInputStringFromUser()).thenReturn("soMeword");
+        when(inputReceiver.shouldCompareCaseSensitive()).thenReturn(Boolean.TRUE);
+        when(wordCountService.findWordsInProvidedString("soMeword", listOfWords))
                 .thenReturn(foundWords);
 
         wordDictionaryService.run("file");
 
         verify(fileReader).getListOfWordsFromFile("file");
         verify(inputReceiver).getInputStringFromUser();
-        verify(wordCountService).findWordsInProvidedString("someword", listOfWords);
+        verify(inputReceiver).shouldCompareCaseSensitive();
+        verify(wordCountService).findWordsInProvidedString("soMeword", listOfWords);
         verify(foundWords).size();
+        verifyNoMoreInteractions(fileReader, inputReceiver, wordCountService);
     }
 
+    @Test
+    public void runTest_notCaseSensitive() {
+        List<String> listOfWords = Collections.singletonList("word");
+        when(fileReader.getListOfWordsFromFile("file")).thenReturn(listOfWords);
+        when(inputReceiver.getInputStringFromUser()).thenReturn("SOMEWORD");
+        when(inputReceiver.shouldCompareCaseSensitive()).thenReturn(Boolean.FALSE);
+        when(wordCountService.findWordsInProvidedString("someword", listOfWords))
+                .thenReturn(foundWords);
+
+
+        wordDictionaryService.run("file");
+
+        verify(fileReader).getListOfWordsFromFile("file");
+        verify(inputReceiver).getInputStringFromUser();
+        verify(inputReceiver).shouldCompareCaseSensitive();
+        verify(wordCountService).findWordsInProvidedString("someword", listOfWords);
+        verify(foundWords).size();
+        verifyNoMoreInteractions(fileReader, inputReceiver, wordCountService);
+    }
 
 }

@@ -8,6 +8,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -33,7 +34,15 @@ public class WordDictionaryService implements CommandLineRunner {
 
         System.out.println("Words in dictionary after filter: " + listOfWords);
 
-        String input = inputReceiver.getInputStringFromUser().toLowerCase();
+        String input = inputReceiver.getInputStringFromUser();
+
+        if (!inputReceiver.shouldCompareCaseSensitive()) {
+            System.out.println("Filter will be case insensitive");
+            input = input.toLowerCase();
+            listOfWords = listOfWords.stream()
+                    .map(String::toLowerCase)
+                    .collect(Collectors.toList());
+        }
 
         List<String> foundWords = wordCountService.findWordsInProvidedString(input, listOfWords);
 

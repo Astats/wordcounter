@@ -20,5 +20,14 @@ public class InputReceiver {
         return input;
     }
 
+    public Boolean shouldCompareCaseSensitive() {
+        System.out.println("Should compare case sensitive input TRUE (case insensitive input) if 'yes' " +
+                "(any other input will mean false)");
+
+        Scanner scanner = new Scanner(System.in);
+
+        return Boolean.valueOf(scanner.nextLine());
+    }
+
 
 }
